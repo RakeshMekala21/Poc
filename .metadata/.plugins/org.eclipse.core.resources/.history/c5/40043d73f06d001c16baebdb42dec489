@@ -1,0 +1,44 @@
+package com.neospring.SpringBootRestfulClient.service;
+
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.neospring.SpringBootRestfulClient.model.User;
+import com.neospring.SpringBootRestfulClient.repository.UserRepository;
+
+@Service
+public class UserService {
+	@Autowired
+	private UserRepository userRepository;
+	
+
+	public User createUser(User user) {
+		return userRepository.save(user);
+	}
+
+
+  public List<User> fetchUserList() {
+	  
+	  return userRepository.findAll();
+  }
+		
+  public User updateUser(User user , Integer id) {
+	  
+	 User userDb=userRepository.findById(id).get();
+	 
+	 if(Objects.nonNull(user.getName())  &&  !"".equalsIgnoreCase(user.getName())){
+		 userDb.setName(user.getName());
+		 
+	 }
+	 
+	 if(Objects.nonNull(user.getEmail()) &&  ! "".equalsIgnoreCase(user.getEmail())){
+		 userDb.setEmail(user.getEmail());
+	 }
+	 
+	  return userRepository.save(null);
+  }
+
+}

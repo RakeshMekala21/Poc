@@ -1,0 +1,74 @@
+package com.neospring.SpringBootRestfulClient.service;
+
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.neospring.SpringBootRestfulClient.model.User;
+import com.neospring.SpringBootRestfulClient.repository.UserRepository;
+
+@Service
+public class UserService {
+	@Autowired
+	private UserRepository userRepository;
+	
+
+	public User saveUser(User user) {
+		return userRepository.save(user);
+	}
+
+
+  public List<User> fetchUserList() {
+	  
+	  return userRepository.findAll();
+  }
+		
+  public User updateUser(User user , Integer id) {
+	  
+	 User userDb=userRepository.findById(id).get();
+	 
+	 if(Objects.nonNull(user.getName())  &&  !"".equalsIgnoreCase(user.getName())){
+		 userDb.setName(user.getName());
+		 
+	 }
+	 if(Objects.nonNull(user.getSurname()) && !"".equalsIgnoreCase(user.getSurname())) {
+		 userDb.setSurname(user.getSurname());
+	 }
+	 
+	 
+	 
+	 if(Objects.nonNull(user.getEmail()) &&  ! "".equalsIgnoreCase(user.getEmail())){
+		 userDb.setEmail(user.getEmail());
+	 }
+	 
+	 if(Objects.nonNull(user.getPassword()) && !"".equalsIgnoreCase(user.getPassword())) {
+		 userDb.setPassword(user.getSurname());
+	 }
+	 
+	  return userRepository.save(userDb);
+  }
+  
+  public List<User> findSortingWithName(String field){
+	  
+	  return userRepository.findAll(Sort.by(field));
+	  
+  }
+
+  
+  public void deleteUserById( Integer id) {
+	  
+	  userRepository.deleteById(id);
+  }
+
+
+//public User findUser(User user, String name) {
+//	 User userDb=userRepository.findByName(name);
+//	 
+//	 return userRepository.save(userDb);
+//
+//}
+
+}
